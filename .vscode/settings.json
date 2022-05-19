@@ -2,9 +2,10 @@
     "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
     "cmake.debugConfig": {
         "args": [
-            "-first", 
-            "--sec-ond",
-            "third"
+            "-is","README.md", 
+            "--output","TEST.md",
+            "--title","\"Table of content\"",
+            "--Unknown"
         ]
     },
     "files.associations": {
@@ -64,6 +65,11 @@
         "stdexcept": "cpp",
         "stop_token": "cpp",
         "streambuf": "cpp",
-        "typeinfo": "cpp"
+        "typeinfo": "cpp",
+        "unordered_set": "cpp",
+        "numbers": "cpp"
     },
+    "cSpell.words": [
+        "smatch"
+    ],
 }

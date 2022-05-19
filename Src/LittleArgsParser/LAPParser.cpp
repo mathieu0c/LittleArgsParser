@@ -66,25 +66,43 @@ std::vector<CommandResult> _parseArgs(int argc,char* argv[],const CmdList& cmds,
 namespace lap
 {
 
-std::unordered_set<CommandResult> parseShortCmd(const std::string_view input,const CmdList& cmds)
+IntermediateParseResult parseShortCmd(const std::string_view input,const CmdList& cmds)
 {
     LOGPL("\tFound a short command : <"<<input<<">\n");
 
-    std::vector<CommandResult> out{};
+    IntermediateParseResult out{};
 
     for(const auto& c : input)
     {
-        if(firstIndexOfShort(c,cmds) == -1)
+        auto targetCmdIdx{firstIndexOfShort(c,cmds)};
+        if(targetCmdIdx == -1)
         {
             LOGPL("Unknown command : <"<<c<<">");
-            throw std::runtime_error{std::string{"Following option is not recognized : -"}+c};
+            throw std::runtime_error{std::string{"Following command is not recognized : -"}+c};
+        }
+        auto targetCmd{cmds[targetCmdIdx]};
+        if(out.list.contains(targetCmd))
+        {
+            LOGPL("This command was already used <"<<c<<">");
+            throw std::runtime_error{std::string{"Following command was already used : -"}+c};
+        }
+        out.list.insert(targetCmd);
+        if(targetCmd->argCount > 0)
+        {
+            if(out.expectingArg == nullptr)
+                out.expectingArg = targetCmd;
+            else
+            {
+                LOGPL("This command was already used <"<<c<<">");
+                throw std::runtime_error{std::string{"Arguments conflicts : commands <"}+out.expectingArg->shortCmd+std::string{"> and <"}+c+std::string{"> were both expecting an argument"}};
+            }
         }
     }
 
     return {};
 }
 
-std::unordered_set<CommandResult> parseLongCmd(const std::string_view input,const CmdList& cmds)
+IntermediateParseResult parseLongCmd(const std::string_view input,const CmdList& cmds)
 {
     LOGPL("\t\tFound a long command : <"<<input<<">\n");
 

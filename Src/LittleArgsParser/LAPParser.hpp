@@ -8,6 +8,17 @@
 namespace lap
 {
 
+namespace
+{
+
+struct IntermediateParseResult{
+    std::unordered_set<SharedCmd> list{};
+    SharedCmd expectingArg{nullptr};
+};
+
+} // namespace
+
+
 template<typename UnaryPredicate,typename T> 
 int32_t firstIndexOf(const T& cmds,UnaryPredicate p){
     auto foundIter{std::find_if(cbegin(cmds),cend(cmds),p)};
@@ -35,8 +46,8 @@ auto firstIndexOfLong(const Command& cmd,const CmdList& cmds){
     });
 }
 
-std::unordered_set<CommandResult> parseShortCmd(const std::string_view input,const CmdList& cmds);
-std::unordered_set<CommandResult> parseLongCmd(const std::string_view input,const CmdList& cmds);
+IntermediateParseResult parseShortCmd(const std::string_view input,const CmdList& cmds);
+IntermediateParseResult parseLongCmd(const std::string_view input,const CmdList& cmds);
 
 std::vector<CommandResult> parseArgs(int argc,char* argv[],const CmdList& cmds,bool skipFirstArg = true);
 

@@ -17,8 +17,12 @@ int main(int argc,char* argv[]){
         LOGL("\t" << e);
     }
     lap::CmdList cmds{};
-    lap::addCommand(cmds,{.shortCmd='f',.longCmd="sec-ond",.argCount=1});
+    lap::addCommand(cmds,{.shortCmd='i',.longCmd="input",.argCount=1});
+    lap::addCommand(cmds,{.shortCmd='o',.longCmd="output",.argCount=1});
+    lap::addCommand(cmds,{.shortCmd={},.longCmd="title",.argCount=1});
+    lap::addCommand(cmds,{.shortCmd='s',.longCmd="",.argCount=0});//save
     lap::parseArgs(argc,argv,cmds,true);
 
+    LOGL(_FILE_);
     return 0;
 }
