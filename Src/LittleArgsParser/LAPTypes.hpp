@@ -40,6 +40,8 @@ inline
 bool operator==(const Command& l, const Command& r){
     return l.shortCmd == r.shortCmd && l.longCmd == r.longCmd && l.argCount == r.argCount;
 }
+std::string to_string(const Command& cmd);
+std::ostream& operator<<(std::ostream& os,const Command& cmd);
 
 using SharedCmd=std::shared_ptr<Command>;
 using SharedCmdVector=std::vector<SharedCmd>;

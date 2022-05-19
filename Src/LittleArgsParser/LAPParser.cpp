@@ -36,7 +36,16 @@ std::vector<CommandResult> _parseArgs(int argc,char* argv[],const CmdList& cmds,
             {
                 //short command
                 //INTERPRET SHORT COMMAND---------------------------
-                parseShortCmd({cbegin(arg)+1,cend(arg)},cmds);
+                auto tmp{parseShortCmd({cbegin(arg)+1,cend(arg)},cmds)};
+                LOGPL("GOT KEYS -- ");
+                for(const auto& key : tmp.list)
+                {
+                    LOGPL("key.short="<<key->shortCmd);
+                }
+                if(tmp.expectingArg != nullptr)
+                {
+                    LOGPL("Waiting for an arg :"<<*tmp.expectingArg);
+                }
                 break;
             }
 
@@ -86,7 +95,6 @@ IntermediateParseResult parseShortCmd(const std::string_view input,const CmdList
             LOGPL("This command was already used <"<<c<<">");
             throw std::runtime_error{std::string{"Following command was already used : -"}+c};
         }
-        out.list.insert(targetCmd);
         if(targetCmd->argCount > 0)
         {
             if(out.expectingArg == nullptr)
@@ -97,9 +105,10 @@ IntermediateParseResult parseShortCmd(const std::string_view input,const CmdList
                 throw std::runtime_error{std::string{"Arguments conflicts : commands <"}+out.expectingArg->shortCmd+std::string{"> and <"}+c+std::string{"> were both expecting an argument"}};
             }
         }
+        out.list.insert(targetCmd);
     }
 
-    return {};
+    return out;
 }
 
 IntermediateParseResult parseLongCmd(const std::string_view input,const CmdList& cmds)

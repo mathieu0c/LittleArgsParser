@@ -24,7 +24,7 @@ int32_t firstIndexOf(const T& cmds,UnaryPredicate p){
     auto foundIter{std::find_if(cbegin(cmds),cend(cmds),p)};
     if(foundIter == cend(cmds))
         return -1;
-    return std::distance(foundIter,cbegin(cmds)); 
+    return std::distance(cbegin(cmds),foundIter); 
 }
 
 inline
