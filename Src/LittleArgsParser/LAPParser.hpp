@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <unordered_set>
+#include <optional>
 
 namespace lap
 {
