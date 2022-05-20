@@ -101,7 +101,7 @@ IntermediateParseResult parseShortCmd(const std::string_view input,const CmdList
                 out.expectingArg = targetCmd;
             else
             {
-                LOGPL("This command was already used <"<<c<<">");
+                LOGPL(std::string{"Arguments conflicts : commands <"}+out.expectingArg->shortCmd+std::string{"> and <"}+c+std::string{"> were both expecting an argument"});
                 throw std::runtime_error{std::string{"Arguments conflicts : commands <"}+out.expectingArg->shortCmd+std::string{"> and <"}+c+std::string{"> were both expecting an argument"}};
             }
         }
@@ -127,7 +127,7 @@ std::vector<CommandResult> parseArgs(int argc,char* argv[],const CmdList& cmds,b
     }
     catch(const std::exception& e)
     {
-        RAWEL("Command parsing error : "<<e.what()<<"\n");
+        RAWEL("Command line parsing error : "<<e.what()<<"\n");
     }
     return out;
 }
