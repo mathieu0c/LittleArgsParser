@@ -105,8 +105,10 @@ ParseResult _parseArgs(int argc,char* argv[],const CmdList& cmds,bool skipFirstA
         if(tmp.cmd->argCount != size(tmp.args))
         {
             using std::to_string;
-            std::string errMsg{"Argument error : "+to_human(tmp.cmd)+" was expecting <"+to_string(tmp.cmd->argCount)+"> arguments but got <"+to_string(size(tmp.args))+">"};
-            throw std::runtime_error{errMsg};
+            auto humanCmd{to_human(tmp.cmd)};
+            std::string errMsg{};
+            LOGPL(errMsg);
+            throw std::runtime_error{"Argument error : "+humanCmd+" was expecting <"+to_string(tmp.cmd->argCount)+"> arguments but got <"+to_string(size(tmp.args))+">"};
         }
         outList.emplace_back();
     }
@@ -198,6 +200,7 @@ std::optional<ParseResult> parseArgs(int argc,char* argv[],const CmdList& cmds,b
     }
     catch(const std::exception& e)
     {
+        LOGPL(e.what());
         RAWEL("Command line parsing error : "<<e.what()<<"\n");
         return {};
     }

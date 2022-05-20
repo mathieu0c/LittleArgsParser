@@ -1,6 +1,7 @@
 #include "LAPTypes.hpp"
 
 #include <ostream>
+#include <iostream>
 
 namespace lap
 {
@@ -15,12 +16,14 @@ std::string to_string(const Command& cmd){
     return out;
 }
 
+
 std::string to_human(const Command& cmd)
 {
     std::string out{"Command \"--"};
     out += cmd.longCmd;
     out += "\" (\'-";
-    out += cmd.shortCmd;
+    if(cmd.shortCmd)
+        out += cmd.shortCmd;
     out += "\')";
     return out;
 }
