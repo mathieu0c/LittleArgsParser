@@ -20,6 +20,7 @@ add_subdirectory(Src)
 add_executable(${PROJECT_EXE_NAME}
     main.cpp
 )
+target_compile_options(${PROJECT_EXE_NAME} PRIVATE -Wno-string-plus-int)
 target_link_libraries(${PROJECT_EXE_NAME} ${CMAKE_PROJECT_NAME})
 
 
@@ -37,4 +38,4 @@ add_subdirectory(Tests)
 # Note that it does not matter if the OS uses / or \, because we are only
 # saving the path size.
 string(LENGTH "${CMAKE_SOURCE_DIR}/" SOURCE_PATH_SIZE)
-add_definitions("-D_FILE_=(char*)(__FILE__ + ${SOURCE_PATH_SIZE})")
+add_definitions("-D_FILE_=((char*)(__FILE__ + ${SOURCE_PATH_SIZE}))")

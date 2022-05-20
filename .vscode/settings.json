@@ -3,8 +3,8 @@
     "cmake.debugConfig": {
         "args": [
             "-is","README.md", 
-            "--output","TEST.md",
-            "--title","\"Table of content\"",
+            // "--output","TEST.md",
+            // "--title","\"Table of content\"",
             "--Unknown"
         ]
     },
@@ -70,6 +70,8 @@
         "numbers": "cpp"
     },
     "cSpell.words": [
+        "LOGP",
+        "RAWE",
         "smatch"
     ],
 }

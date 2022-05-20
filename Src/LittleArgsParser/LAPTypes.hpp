@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <memory>
 #include <vector>
+#include <unordered_set>
 
 namespace
 {
@@ -41,10 +42,16 @@ bool operator==(const Command& l, const Command& r){
     return l.shortCmd == r.shortCmd && l.longCmd == r.longCmd && l.argCount == r.argCount;
 }
 std::string to_string(const Command& cmd);
+std::string to_human(const Command& cmd);//human readable string
 std::ostream& operator<<(std::ostream& os,const Command& cmd);
 
 using SharedCmd=std::shared_ptr<Command>;
-using SharedCmdVector=std::vector<SharedCmd>;
+inline
+auto to_human(const SharedCmd& cmd){return to_human(*cmd);};
+inline
+std::ostream& operator<<(std::ostream& os,const SharedCmd& cmd){return os << *cmd;};
+// using SharedCmdVector=std::vector<SharedCmd>;
+using SharedCmdSet=std::unordered_set<SharedCmd>;
 
 struct CommandResult{
     const SharedCmd cmd{};
@@ -54,11 +61,16 @@ inline
 bool operator==(const CommandResult& l, const CommandResult& r){
     return l.cmd == r.cmd && l.args == r.args;
 }
-
-using CmdList = SharedCmdVector;
 inline
-void addCommand(SharedCmdVector& cmds,Command cmd){
-    cmds.emplace_back(std::make_shared<Command>(std::move(cmd)));
+auto to_human(const CommandResult& cmd){return to_human(*cmd.cmd);};
+inline
+std::ostream& operator<<(std::ostream& os,const CommandResult& cmd){return os << *cmd.cmd;};
+
+using CmdList = SharedCmdSet;
+inline
+void addCommand(CmdList& cmds,Command cmd){
+    // cmds.emplace_back(std::make_shared<Command>(std::move(cmd)));
+    cmds.insert(std::make_shared<Command>(std::move(cmd)));
 }
 
 } // namespace lap

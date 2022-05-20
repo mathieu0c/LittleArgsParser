@@ -21,6 +21,7 @@ int main(int argc,char* argv[]){
     lap::addCommand(cmds,{.shortCmd='o',.longCmd="output",.argCount=1});
     lap::addCommand(cmds,{.shortCmd={},.longCmd="title",.argCount=1});
     lap::addCommand(cmds,{.shortCmd='s',.longCmd="",.argCount=0});//save
+    lap::addCommand(cmds,{.shortCmd={},.longCmd="Unknown",.argCount=0});
     lap::parseArgs(argc,argv,cmds,true);
 
     LOGL(_FILE_);

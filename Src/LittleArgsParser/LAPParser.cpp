@@ -9,6 +9,8 @@ std::vector<CommandResult> _parseArgs(int argc,char* argv[],const CmdList& cmds,
 
     std::vector<CommandResult> out{};
 
+    IntermediateParseResult tmpResults{};
+
     for(const auto& arg : inArgs)
     {
         LOGPL("Parsing arg <"<<arg<<">");
@@ -20,6 +22,9 @@ std::vector<CommandResult> _parseArgs(int argc,char* argv[],const CmdList& cmds,
             {
                 tmpArgType = CmdType::TYPE_TEXT;
                 LOGPL("Found a simple text\n");
+                if(tmpResults.expectingArg){
+                    
+                }
                 break;
             }
             //else
@@ -46,6 +51,12 @@ std::vector<CommandResult> _parseArgs(int argc,char* argv[],const CmdList& cmds,
                 {
                     LOGPL("Waiting for an arg :"<<*tmp.expectingArg);
                 }
+                tmpResults = merge(tmpResults,tmp);
+                LOGPL("GOT KEYS after merge-- ");
+                for(const auto& key : tmpResults.list)
+                {
+                    LOGPL("key.short="<<key->shortCmd);
+                }
                 break;
             }
 
@@ -59,13 +70,25 @@ std::vector<CommandResult> _parseArgs(int argc,char* argv[],const CmdList& cmds,
             {
                 //long command
                 //INTERPRET LONG COMMAND----------------------------
-                parseLongCmd({cbegin(arg)+2,cend(arg)},cmds);
+                tmpResults = merge(tmpResults,parseLongCmd({cbegin(arg)+2,cend(arg)},cmds));
+                LOGPL("GOT KEYS after LONG-- ");
+                for(const auto& key : tmpResults.list)
+                {
+                    LOGPL("key.short="<<key->shortCmd);
+                }
                 break;
             }
 
             LOGEL("You are not supposed to be here -- Err when parsing arg <"<<arg<<"> at letter <"<<c<<">");
         }
     }
+
+    LOGPL("Got commands summary :");
+    for(const auto& e : tmpResults.list)
+    {
+        LOGPL("\t" << e);
+    }
+
     return out;
 }
 
@@ -83,13 +106,13 @@ IntermediateParseResult parseShortCmd(const std::string_view input,const CmdList
 
     for(const auto& c : input)
     {
-        auto targetCmdIdx{firstIndexOfShort(c,cmds)};
-        if(targetCmdIdx == -1)
+        auto targetCmdIter{find(c,cmds)};
+        if(targetCmdIter == cend(cmds))
         {
             LOGPL("Unknown command : <"<<c<<">");
             throw std::runtime_error{std::string{"Following command is not recognized : -"}+c};
         }
-        auto targetCmd{cmds[targetCmdIdx]};
+        const SharedCmd& targetCmd = *targetCmdIter;
         if(out.list.contains(targetCmd))
         {
             LOGPL("This command was already used <"<<c<<">");
@@ -97,7 +120,7 @@ IntermediateParseResult parseShortCmd(const std::string_view input,const CmdList
         }
         if(targetCmd->argCount > 0)
         {
-            if(out.expectingArg == nullptr)
+            if(!out.expectingArg)
                 out.expectingArg = targetCmd;
             else
             {
@@ -111,11 +134,25 @@ IntermediateParseResult parseShortCmd(const std::string_view input,const CmdList
     return out;
 }
 
-IntermediateParseResult parseLongCmd(const std::string_view input,const CmdList& cmds)
+IntermediateParseResult parseLongCmd(const std::string& input,const CmdList& cmds)
 {
     LOGPL("\t\tFound a long command : <"<<input<<">\n");
 
-    return {};
+    IntermediateParseResult out{};
+    auto targetCmdIter{find(input,cmds)};
+    if(targetCmdIter == cend(cmds))
+    {
+        LOGPL("Unknown command : <"<<input<<">");
+        throw std::runtime_error{std::string{"Following command is not recognized : --"}+input};
+    }
+    const SharedCmd& targetCmd = *targetCmdIter;
+    if(targetCmd->argCount > 0)
+    {
+        out.expectingArg = targetCmd;
+    }
+    out.list.insert(targetCmd);
+
+    return out;
 }
 
 std::vector<CommandResult> parseArgs(int argc,char* argv[],const CmdList& cmds,bool skipFirstArg){

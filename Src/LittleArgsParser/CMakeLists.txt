@@ -10,6 +10,7 @@ set(SOURCES_SRC
 
 add_library(${CMAKE_PROJECT_NAME} STATIC ${SOURCES_SRC})
 set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)
+target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE -Wno-string-plus-int)
 
 #----- Used to get the current filename
 

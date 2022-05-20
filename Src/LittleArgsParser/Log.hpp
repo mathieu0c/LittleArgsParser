@@ -49,7 +49,8 @@
 #endif
 
 #ifdef ENABLE_ERROR_LOG
-    #define RAWEL(x) std::cerr<<x
+    #define RAWE(x) std::cerr<<x
+    #define RAWEL(x) RAWE(x)<<"\n"
     #define LOGE(x) std::cerr<<"ERR:"<<_FILE_<<":"<<__PRETTY_FUNCTION__<<": l."<<__LINE__<<" : "<<x
     #define LOGEL(x) LOGE(x)<<"\n"
 #else

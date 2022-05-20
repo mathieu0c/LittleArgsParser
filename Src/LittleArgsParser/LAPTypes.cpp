@@ -14,6 +14,17 @@ std::string to_string(const Command& cmd){
     out += std::to_string(cmd.argCount)+"}";
     return out;
 }
+
+std::string to_human(const Command& cmd)
+{
+    std::string out{"Command \"--"};
+    out += cmd.longCmd;
+    out += "\" (\'-";
+    out += cmd.shortCmd;
+    out += "\')";
+    return out;
+}
+
 std::ostream& operator<<(std::ostream& os,const Command& cmd){
     return os << to_string(cmd);
 }
