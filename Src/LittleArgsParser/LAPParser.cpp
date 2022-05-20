@@ -206,7 +206,7 @@ std::optional<ParseResult> parseArgs(const StringVector& inArgs,const CmdList& c
     return out;
 }
 
-std::pair<bool,const StringVector&> gotCmd(const ParseResult& cmds,const Command& cmd)
+lap::CmdMatch gotCmd(const ParseResult& cmds,const Command& cmd)
 {
     for(const auto& e : cmds.cmdList)
     {

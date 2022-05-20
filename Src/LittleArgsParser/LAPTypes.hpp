@@ -95,6 +95,16 @@ SharedCmd addCommand(CmdList& cmds,Command cmd){
     return *(get<0>(cmds.insert(std::make_shared<Command>(std::move(cmd)))));
 }
 
+//used to know if a cmd was matched after parsing input args
+struct CmdMatch{
+    bool matched{false};
+    const StringVector& args{};
+
+    operator bool()const{
+        return matched;
+    }
+};
+
 } // namespace lap
 
 namespace std

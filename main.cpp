@@ -65,7 +65,7 @@ int main(int argc,char* argv[]){
     bool doBackup{true};
     std::string tocTitle{};
 
-    doBackup = std::get<0>(lap::gotCmd(progArgs,cmd_outputFile));
+    doBackup = lap::gotCmd(progArgs,cmd_outputFile);//implicit conversion to bool
 
     auto [foundTitle,title]{lap::gotCmd(progArgs,cmd_title)};
     if(foundTitle)

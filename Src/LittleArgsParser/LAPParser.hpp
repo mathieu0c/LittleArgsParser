@@ -93,7 +93,7 @@ auto parseArgs(int argc,char* argv[],const CmdList& cmds,bool skipFirstArg=true)
     return parseArgs(StringVector{argv+static_cast<int>(skipFirstArg),argv+argc},cmds);
 }
 
-std::pair<bool,const StringVector&> gotCmd(const ParseResult& cmds,const Command& cmd); 
+lap::CmdMatch gotCmd(const ParseResult& cmds,const Command& cmd); 
 
 inline
 auto gotCmd(const ParseResult& cmds,const SharedCmd& cmd){return gotCmd(cmds,*cmd);}
