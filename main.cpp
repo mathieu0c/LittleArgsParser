@@ -40,8 +40,7 @@ int main(int argc,char* argv[]){
     }
     lap::CmdList cmds{};
 
-    lap::Command cmd_inputFile{.shortCmd='i',.longCmd="input",.argCount=1};
-    lap::addCommand(cmds,cmd_inputFile);
+    auto cmd_inputFile{lap::addCommand(cmds,lap::Command{.shortCmd='i',.longCmd="input",.argCount=1})};
 
     lap::Command cmd_outputFile{.shortCmd='o',.longCmd="output",.argCount=1};
     lap::addCommand(cmds,cmd_outputFile);

@@ -87,9 +87,16 @@ auto find(const decltype(Command::longCmd)& cmd,const CmdList& cmds){
 IntermediateParseResult parseShortCmd(const std::string_view input,const CmdList& cmds);
 IntermediateParseResult parseLongCmd(const std::string& input,const CmdList& cmds);
 
-std::optional<ParseResult> parseArgs(int argc,char* argv[],const CmdList& cmds,bool skipFirstArg = true);
+std::optional<ParseResult> parseArgs(const StringVector& inArgs,const CmdList& cmds);
+inline
+auto parseArgs(int argc,char* argv[],const CmdList& cmds,bool skipFirstArg=true){
+    return parseArgs(StringVector{argv+static_cast<int>(skipFirstArg),argv+argc},cmds);
+}
 
 std::pair<bool,const StringVector&> gotCmd(const ParseResult& cmds,const Command& cmd); 
+
+inline
+auto gotCmd(const ParseResult& cmds,const SharedCmd& cmd){return gotCmd(cmds,*cmd);}
 
 } // namespace lap
 

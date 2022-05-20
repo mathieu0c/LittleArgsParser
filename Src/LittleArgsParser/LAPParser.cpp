@@ -6,8 +6,7 @@
 namespace
 {
 using namespace lap;
-ParseResult _parseArgs(int argc,char* argv[],const CmdList& cmds,bool skipFirstArg){
-    StringVector inArgs{argv+static_cast<int>(skipFirstArg),argv+argc};
+ParseResult _parseArgs(const StringVector& inArgs,const CmdList& cmds){
 
     std::unordered_map<SharedCmd,StringVector> cmdArgs{};
     StringVector freeArgs{};
@@ -191,12 +190,12 @@ IntermediateParseResult parseLongCmd(const std::string& input,const CmdList& cmd
     return out;
 }
 
-std::optional<ParseResult> parseArgs(int argc,char* argv[],const CmdList& cmds,bool skipFirstArg){
+std::optional<ParseResult> parseArgs(const StringVector& inArgs,const CmdList& cmds){
     ParseResult out{};
 
     try
     {
-        out = _parseArgs(argc,argv,cmds,skipFirstArg);
+        out = _parseArgs(inArgs,cmds);
     }
     catch(const std::exception& e)
     {

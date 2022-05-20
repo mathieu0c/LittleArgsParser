@@ -90,9 +90,9 @@ auto to_human(const CommandResult& cmd){return to_human(*cmd.cmd);};
 
 using CmdList = SharedCmdSet;
 inline
-void addCommand(CmdList& cmds,Command cmd){
+SharedCmd addCommand(CmdList& cmds,Command cmd){
     // cmds.emplace_back(std::make_shared<Command>(std::move(cmd)));
-    cmds.insert(std::make_shared<Command>(std::move(cmd)));
+    return *(get<0>(cmds.insert(std::make_shared<Command>(std::move(cmd)))));
 }
 
 } // namespace lap
