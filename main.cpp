@@ -22,8 +22,16 @@ int main(int argc,char* argv[]){
     lap::addCommand(cmds,{.shortCmd={},.longCmd="title",.argCount=1});
     lap::addCommand(cmds,{.shortCmd='s',.longCmd="",.argCount=0});//save
     lap::addCommand(cmds,{.shortCmd={},.longCmd="Unknown",.argCount=0});
-    lap::parseArgs(argc,argv,cmds,true);
+    auto argsGivenOpt{lap::parseArgs(argc,argv,cmds,true)};
 
-    LOGL(_FILE_);
+    if(!argsGivenOpt)
+    {
+        LOGEL("An error occurred when parsing command line arguments");
+        return 1;
+    }
+
+    auto progArgs{argsGivenOpt.value()};
+    
+
     return 0;
 }

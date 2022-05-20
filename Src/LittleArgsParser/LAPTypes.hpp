@@ -24,6 +24,17 @@ inline void hashCombine(std::size_t &seed, T const &v, Rest &&... rest) {
 namespace lap
 {
 using StringVector=std::vector<std::string>;
+template<typename T>
+std::ostream& operator<<(std::ostream& os,const std::vector<T>& vec){
+    os << "{";
+    for(size_t i{}; i < size(vec);++i)
+    {
+        os << vec[i];
+        if(i != size(vec)-1)
+            os << ',';
+    }
+    return os << "}";
+}
 
 enum CmdType{
     TYPE_UNKNOWN=0,
@@ -58,13 +69,24 @@ struct CommandResult{
     StringVector args{};
 };
 inline
-bool operator==(const CommandResult& l, const CommandResult& r){
-    return l.cmd == r.cmd && l.args == r.args;
-}
+std::ostream& operator<<(std::ostream& os,const CommandResult& cmd){
+    return os << "{.cmd=" <<*cmd.cmd<<",.args="<<cmd.args<<"}";
+};
+using ResultList=std::vector<CommandResult>;
+struct ParseResult{
+    ResultList cmdList{};
+    StringVector freeArgs{};
+};
+inline
+std::ostream& operator<<(std::ostream& os,const ParseResult& cmd){
+    return os << "{.cmdList=" <<cmd.cmdList<<",.freeArgs="<<cmd.freeArgs<<"}";
+};
+// inline
+// bool operator==(const CommandResult& l, const CommandResult& r){
+//     return l.cmd == r.cmd && l.args == r.args;
+// }
 inline
 auto to_human(const CommandResult& cmd){return to_human(*cmd.cmd);};
-inline
-std::ostream& operator<<(std::ostream& os,const CommandResult& cmd){return os << *cmd.cmd;};
 
 using CmdList = SharedCmdSet;
 inline
@@ -90,6 +112,14 @@ struct hash<lap::Command>
         size_t out{};
         ::hashCombine(out,key->longCmd,key->shortCmd,key->argCount);
         return out;
+    }
+};
+
+template<>
+struct hash<lap::CommandResult>
+{
+    size_t operator()(const lap::CommandResult& r){
+        return std::hash<lap::SharedCmd>()(r.cmd);
     }
 };
 

@@ -3,9 +3,10 @@
     "cmake.debugConfig": {
         "args": [
             "-is","README.md", 
-            // "--output","TEST.md",
-            // "--title","\"Table of content\"",
-            "--Unknown"
+            "--output","TEST.md",
+            "--title","\"Table of content\"",
+            "--Unknown",
+            "Free args"
         ]
     },
     "files.associations": {

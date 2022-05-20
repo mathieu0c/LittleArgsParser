@@ -1,13 +1,16 @@
 #include "Log.hpp"
 #include "LAPParser.hpp"
 
+#include <unordered_map>
+
 namespace
 {
 using namespace lap;
-std::vector<CommandResult> _parseArgs(int argc,char* argv[],const CmdList& cmds,bool skipFirstArg){
+ParseResult _parseArgs(int argc,char* argv[],const CmdList& cmds,bool skipFirstArg){
     StringVector inArgs{argv+static_cast<int>(skipFirstArg),argv+argc};
 
-    std::vector<CommandResult> out{};
+    std::unordered_map<SharedCmd,StringVector> cmdArgs{};
+    StringVector freeArgs{};
 
     IntermediateParseResult tmpResults{};
 
@@ -22,8 +25,17 @@ std::vector<CommandResult> _parseArgs(int argc,char* argv[],const CmdList& cmds,
             {
                 tmpArgType = CmdType::TYPE_TEXT;
                 LOGPL("Found a simple text\n");
-                if(tmpResults.expectingArg){
-                    
+                if(tmpResults.expectingArg)
+                {
+                    cmdArgs[tmpResults.expectingArg].emplace_back(std::move(arg));
+                    if(size(cmdArgs[tmpResults.expectingArg]) == tmpResults.expectingArg->argCount)
+                    {
+                        tmpResults.expectingArg.reset();
+                    }
+                }
+                else
+                {
+                    freeArgs.emplace_back(std::move(arg));
                 }
                 break;
             }
@@ -83,13 +95,35 @@ std::vector<CommandResult> _parseArgs(int argc,char* argv[],const CmdList& cmds,
         }
     }
 
+    ResultList outList{};
+
     LOGPL("Got commands summary :");
-    for(const auto& e : tmpResults.list)
+    for(auto& e : tmpResults.list)
+    {
+        LOGPL("\t" << e);
+        auto tmp{CommandResult{.cmd = e,.args=cmdArgs[e]}};
+        if(tmp.cmd->argCount != size(tmp.args))
+        {
+            using std::to_string;
+            std::string errMsg{"Argument error : "+to_human(tmp.cmd)+" was expecting <"+to_string(tmp.cmd->argCount)+"> arguments but got <"+to_string(size(tmp.args))+">"};
+            throw std::runtime_error{errMsg};
+        }
+        outList.emplace_back();
+    }
+    LOGPL("Free args :");
+    for(const auto& e : freeArgs)
     {
         LOGPL("\t" << e);
     }
 
-    return out;
+    LOGL("-----------------------------------------------");
+
+    for(const auto& e : outList)
+    {
+        LOGPL(e);
+    }
+
+    return {.cmdList=std::move(outList),.freeArgs=std::move(freeArgs)};
 }
 
 } // namespace
@@ -155,8 +189,8 @@ IntermediateParseResult parseLongCmd(const std::string& input,const CmdList& cmd
     return out;
 }
 
-std::vector<CommandResult> parseArgs(int argc,char* argv[],const CmdList& cmds,bool skipFirstArg){
-    std::vector<CommandResult> out{};
+std::optional<ParseResult> parseArgs(int argc,char* argv[],const CmdList& cmds,bool skipFirstArg){
+    ParseResult out{};
 
     try
     {
@@ -165,9 +199,21 @@ std::vector<CommandResult> parseArgs(int argc,char* argv[],const CmdList& cmds,b
     catch(const std::exception& e)
     {
         RAWEL("Command line parsing error : "<<e.what()<<"\n");
+        return {};
     }
     return out;
 }
 
+std::pair<bool,const StringVector&> gotCmd(const ParseResult& cmds,const Command& cmd)
+{
+    for(const auto& e : cmds.cmdList)
+    {
+        if(*e.cmd == cmd)
+        {
+            return {true,e.args};
+        }
+    }
+    return {false,{}};
+}
 
 } // namespace lap
