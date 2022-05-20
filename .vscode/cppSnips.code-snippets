@@ -31,5 +31,14 @@
 			""
 		],
 		"description": "Basic test code"
+	},
+	"Prog arg": {
+		"scope": "cpp",
+		"prefix": "cmd",
+		"body": [
+			"lap::Command ${1:commandName}{.shortCmd='${2:ShortCommand}',.longCmd=\"${3:long-command}\",.argCount=${4:0}};",
+			"lap::addCommand(cmds,${1:commandName});"
+		],
+		"description": "Basic arg command"
 	}
 }

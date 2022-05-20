@@ -2,10 +2,9 @@
     "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
     "cmake.debugConfig": {
         "args": [
-            "-is","README.md", 
+            "-ib","README.md", 
             "--output","TEST.md",
-            "--title","\"Table of content\"",
-            "--Unknown",
+            "--toc-title","\"Table of content\"",
             "Free args"
         ]
     },

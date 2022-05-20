@@ -88,7 +88,7 @@ IntermediateParseResult parseLongCmd(const std::string& input,const CmdList& cmd
 
 std::optional<ParseResult> parseArgs(int argc,char* argv[],const CmdList& cmds,bool skipFirstArg = true);
 
-std::pair<bool,const StringVector&> gotCmd(const CmdList& cmds,const Command& cmd); 
+std::pair<bool,const StringVector&> gotCmd(const ParseResult& cmds,const Command& cmd); 
 
 } // namespace lap
 

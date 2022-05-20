@@ -17,11 +17,19 @@ int main(int argc,char* argv[]){
         LOGL("\t" << e);
     }
     lap::CmdList cmds{};
-    lap::addCommand(cmds,{.shortCmd='i',.longCmd="input",.argCount=1});
-    lap::addCommand(cmds,{.shortCmd='o',.longCmd="output",.argCount=1});
-    lap::addCommand(cmds,{.shortCmd={},.longCmd="title",.argCount=1});
-    lap::addCommand(cmds,{.shortCmd='s',.longCmd="",.argCount=0});//save
-    lap::addCommand(cmds,{.shortCmd={},.longCmd="Unknown",.argCount=3});
+
+    lap::Command cmd_inputFile{.shortCmd='i',.longCmd="input",.argCount=1};
+    lap::addCommand(cmds,cmd_inputFile);
+
+    lap::Command cmd_outputFile{.shortCmd='o',.longCmd="output",.argCount=1};
+    lap::addCommand(cmds,cmd_outputFile);
+
+    lap::Command cmd_backup{.shortCmd='b',.longCmd="backup",.argCount=0};
+    lap::addCommand(cmds,cmd_backup);
+
+    lap::Command title{.shortCmd='t',.longCmd="toc-title",.argCount=1};
+    lap::addCommand(cmds,title);
+
     auto argsGivenOpt{lap::parseArgs(argc,argv,cmds,true)};
 
     if(!argsGivenOpt)
@@ -31,7 +39,11 @@ int main(int argc,char* argv[]){
     }
 
     auto progArgs{argsGivenOpt.value()};
-    
+    auto doBackup{std::get<0>(lap::gotCmd(progArgs,cmd_outputFile))};
+    if(doBackup)
+    {
+        LOGPL("You requested a Backup !");
+    }
 
     return 0;
 }

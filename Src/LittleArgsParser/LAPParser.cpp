@@ -110,7 +110,7 @@ ParseResult _parseArgs(int argc,char* argv[],const CmdList& cmds,bool skipFirstA
             LOGPL(errMsg);
             throw std::runtime_error{"Argument error : "+humanCmd+" was expecting <"+to_string(tmp.cmd->argCount)+"> arguments but got <"+to_string(size(tmp.args))+">"};
         }
-        outList.emplace_back();
+        outList.emplace_back(std::move(tmp));
     }
     LOGPL("Free args :");
     for(const auto& e : freeArgs)
