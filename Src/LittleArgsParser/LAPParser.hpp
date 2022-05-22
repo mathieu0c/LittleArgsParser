@@ -93,10 +93,10 @@ auto parseArgs(int argc,char* argv[],const CmdList& cmds,bool skipFirstArg=true)
     return parseArgs(StringVector{argv+static_cast<int>(skipFirstArg),argv+argc},cmds);
 }
 
-lap::CmdMatch gotCmd(const ParseResult& cmds,const Command& cmd); 
+lap::CmdMatch matchedCmd(const ParseResult& cmds,const Command& cmd); 
 
 inline
-auto gotCmd(const ParseResult& cmds,const SharedCmd& cmd){return gotCmd(cmds,*cmd);}
+auto matchedCmd(const ParseResult& cmds,const SharedCmd& cmd){return matchedCmd(cmds,*cmd);}
 
 } // namespace lap
 

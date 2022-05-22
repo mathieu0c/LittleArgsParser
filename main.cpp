@@ -65,19 +65,19 @@ int main(int argc,char* argv[]){
     bool doBackup{true};
     std::string tocTitle{};
 
-    doBackup = lap::gotCmd(progArgs,cmd_outputFile);//implicit conversion to bool
+    doBackup = lap::matchedCmd(progArgs,cmd_outputFile);//implicit conversion to bool
 
-    auto [foundTitle,title]{lap::gotCmd(progArgs,cmd_title)};
+    auto [foundTitle,title]{lap::matchedCmd(progArgs,cmd_title)};
     if(foundTitle)
     {
         tocTitle = title[0];
     }
     
-    auto [foundInput,tmpInputFiles]{lap::gotCmd(progArgs,cmd_inputFile)};
+    auto [foundInput,tmpInputFiles]{lap::matchedCmd(progArgs,cmd_inputFile)};
     if(foundInput)//if we have found an input file
         inputFiles.emplace(cbegin(inputFiles),tmpInputFiles[0]);//insert it at the beginning
     
-    auto [foundOutput,tmpOutputFiles]{lap::gotCmd(progArgs,cmd_outputFile)};
+    auto [foundOutput,tmpOutputFiles]{lap::matchedCmd(progArgs,cmd_outputFile)};
     if(foundOutput)
     {
         outputFile = tmpOutputFiles[0];
