@@ -33,6 +33,7 @@ int main(int argc,char* argv[]){
                         "Specify explicitly an output file. Note that this option can not be used if more than 1 input file is specified."});
     auto cmd_title = lap::addCommand(cmds,lap::Command{.shortCmd='t',.longCmd="title",.argCount=1,.description=
                         "Specify a title for the table of content. If not set, the default title will be used"});
+    auto cmd_help = lap::addCommand(cmds,lap::Command{.shortCmd='h',.longCmd="help",.argCount=0,.description="Display this help"});
 
     LOGL("------------");
 
