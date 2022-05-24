@@ -10,24 +10,9 @@
 namespace
 {
 
-template<typename T>
-std::ostream& operator<<(std::ostream& os,const std::vector<T>& vec){
-    os << "{";
-    for(size_t i{}; i < size(vec);++i)
-    {
-        os << vec[i];
-        if(i != size(vec)-1)
-            os << ',';
-    }
-    return os << "}";
-}
 
 } // namespace
 
-
-void addToMd(const lap::StringVector& i,const std::string& o, bool doBackup, const std::string& tocTitle){
-    LOGL("Running markdown TOC on <"<<i<<"> to the ouput : <"<<o<<"> Backup ? <"<<doBackup<<"> TOC title ? <"<<tocTitle<<">");
-}
 
 int main(int argc,char* argv[]){
     
@@ -40,54 +25,19 @@ int main(int argc,char* argv[]){
     }
     lap::CmdList cmds{};
 
-    auto cmd_inputFile{lap::addCommand(cmds,lap::Command{.shortCmd='i',.longCmd="input",.argCount=1})};
+    auto cmd_backup = lap::addCommand(cmds,lap::Command{.shortCmd='b',.longCmd="backup",.argCount=0,.description=
+                        "Backup each input file as <INPUT.old>"});
+    auto cmd_input = lap::addCommand(cmds,lap::Command{.shortCmd='i',.longCmd="",.argCount=1,.description=
+                        "Specify explicitly an input file"});
+    auto cmd_output = lap::addCommand(cmds,lap::Command{.shortCmd={},.longCmd="output",.argCount=1,.description=
+                        "Specify explicitly an output file. Note that this option can not be used if more than 1 input file is specified."});
+    auto cmd_title = lap::addCommand(cmds,lap::Command{.shortCmd='t',.longCmd="title",.argCount=1,.description=
+                        "Specify a title for the table of content. If not set, the default title will be used"});
 
-    lap::Command cmd_outputFile{.shortCmd='o',.longCmd="output",.argCount=1};
-    lap::addCommand(cmds,cmd_outputFile);
+    LOGL("------------");
 
-    lap::Command cmd_backup{.shortCmd='b',.longCmd="backup",.argCount=0};
-    lap::addCommand(cmds,cmd_backup);
-
-    lap::Command cmd_title{.shortCmd='t',.longCmd="toc-title",.argCount=1};
-    lap::addCommand(cmds,cmd_title);
-
-    auto argsGivenOpt{lap::parseArgs(argc,argv,cmds,true)};
-
-    if(!argsGivenOpt)
-    {
-        LOGEL("An error occurred when parsing command line arguments");
-        return 1;
-    }
-    auto progArgs{argsGivenOpt.value()};
-
-    lap::StringVector inputFiles{progArgs.freeArgs};
-    std::string outputFile{};
-    bool doBackup{true};
-    std::string tocTitle{};
-
-    doBackup = lap::matchedCmd(progArgs,cmd_outputFile);//implicit conversion to bool
-
-    auto [foundTitle,title]{lap::matchedCmd(progArgs,cmd_title)};
-    if(foundTitle)
-    {
-        tocTitle = title[0];
-    }
-    
-    auto [foundInput,tmpInputFiles]{lap::matchedCmd(progArgs,cmd_inputFile)};
-    if(foundInput)//if we have found an input file
-        inputFiles.emplace(cbegin(inputFiles),tmpInputFiles[0]);//insert it at the beginning
-    
-    auto [foundOutput,tmpOutputFiles]{lap::matchedCmd(progArgs,cmd_outputFile)};
-    if(foundOutput)
-    {
-        outputFile = tmpOutputFiles[0];
-        std::vector<std::string> rlyRunningWith{inputFiles[0]};
-        addToMd(rlyRunningWith,outputFile,doBackup,tocTitle);
-        inputFiles[0] = inputFiles[size(inputFiles)-1];
-        inputFiles.resize(size(inputFiles)-1);
-    }
-    
-    addToMd(inputFiles,outputFile,doBackup,tocTitle);
+    auto baseHelp=lap::getCmdHelp(cmds);
+    LOGL(baseHelp);
 
     return 0;
 }

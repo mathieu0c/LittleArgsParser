@@ -67,7 +67,9 @@
         "streambuf": "cpp",
         "typeinfo": "cpp",
         "unordered_set": "cpp",
-        "numbers": "cpp"
+        "numbers": "cpp",
+        "codecvt": "cpp",
+        "iomanip": "cpp"
     },
     "cSpell.words": [
         "LOGP",

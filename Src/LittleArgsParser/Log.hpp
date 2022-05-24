@@ -12,7 +12,7 @@
 
     #define LOG(x) std::cout<<x
     #define LOGL(x) LOG(x)<<"\n"
-    #define LOGP(x) std::cout<<_FILE_<<" - <"<<__func__<<"> l."<<__LINE__<<" : "<<x
+    #define LOGP(x) std::cout<<__PRETTY_FUNCTION__<<": l."<<__LINE__<<" : "<<x
     #define LOGPL(x) LOGP(x)<<"\n"
 
     #include <regex>
@@ -51,12 +51,10 @@
 #ifdef ENABLE_ERROR_LOG
     #define RAWE(x) std::cerr<<x
     #define RAWEL(x) RAWE(x)<<"\n"
-    #define LOGE(x) std::cerr<<"ERR:"<<_FILE_<<":"<<__PRETTY_FUNCTION__<<": l."<<__LINE__<<" : "<<x
+    #define LOGE(x) std::cerr<<"ERR:"<<__FILE__<<":"<<__PRETTY_FUNCTION__<<": l."<<__LINE__<<" : "<<x
     #define LOGEL(x) LOGE(x)<<"\n"
 #else
     #define LOGE(x);
     #define RAWEL(x);
     #define LOGEL(x);
 #endif
-
-

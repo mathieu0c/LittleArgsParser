@@ -47,6 +47,7 @@ struct Command{
     char shortCmd{};
     std::string longCmd{};
     int32_t argCount{0};
+    std::string description{};
 };
 inline
 bool operator==(const Command& l, const Command& r){

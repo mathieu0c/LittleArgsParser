@@ -215,7 +215,7 @@ lap::CmdMatch matchedCmd(const ParseResult& cmds,const Command& cmd)
             return {true,e.args};
         }
     }
-    return {false,{}};
+    return {.matched=false};
 }
 
 } // namespace lap
