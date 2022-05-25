@@ -8,19 +8,6 @@
 #include <unordered_set>
 #include <iostream>
 
-namespace
-{
-
-template <typename T, typename... Rest>
-inline void hashCombine(std::size_t &seed, T const &v, Rest &&... rest) {
-    std::hash<T> hasher;
-    seed ^= (hasher(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2));
-    int i[] = { 0, (hashCombine(seed, std::forward<Rest>(rest)), 0)... };
-    (void)(i);
-}
-
-} // namespace
-
 
 namespace lap
 {
@@ -136,6 +123,23 @@ inline
 auto to_human(const CommandResult& cmd){return to_human(*cmd.cmd);};
 
 } // namespace lap
+
+
+
+
+
+namespace
+{
+
+template <typename T, typename... Rest>
+inline void hashCombine(std::size_t &seed, T const &v, Rest &&... rest) {
+    std::hash<T> hasher;
+    seed ^= (hasher(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2));
+    int i[] = { 0, (hashCombine(seed, std::forward<Rest>(rest)), 0)... };
+    (void)(i);
+}
+
+} // namespace
 
 namespace std
 {
