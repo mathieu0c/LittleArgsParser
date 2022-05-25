@@ -1,0 +1,2 @@
+add_subdirectory(libLittleArgsParser)
+add_subdirectory(usageExample)
