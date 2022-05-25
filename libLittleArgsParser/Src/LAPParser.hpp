@@ -1,6 +1,6 @@
 #pragma once
 
-#include "LAPTypes.hpp"
+#include "LittleArgsParser/LAPTypes.hpp"
 
 #include <algorithm>
 #include <unordered_set>
@@ -16,6 +16,13 @@ struct IntermediateParseResult{
     lap::CmdList list{};
     SharedCmd expectingArg{nullptr};
     lap::StringVector freeArgs{};
+};
+
+enum CmdType{
+    TYPE_UNKNOWN=0,
+    TYPE_SHORT=1u<<0,
+    TYPE_LONG=1u<<1,
+    TYPE_TEXT=1u<<2
 };
 
 

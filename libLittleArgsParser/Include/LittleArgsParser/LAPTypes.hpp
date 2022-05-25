@@ -6,6 +6,7 @@
 #include <memory>
 #include <vector>
 #include <unordered_set>
+#include <iostream>
 
 namespace
 {
@@ -97,13 +98,6 @@ std::ostream& operator<<(std::ostream& os,const std::vector<T>& vec){
     }
     return os << "}";
 }
-
-enum CmdType{
-    TYPE_UNKNOWN=0,
-    TYPE_SHORT=1u<<0,
-    TYPE_LONG=1u<<1,
-    TYPE_TEXT=1u<<2
-};
 
 //-------------------------- FUNCTIONS
 

@@ -52,7 +52,7 @@ ParseResult _parseArgs(const StringVector& inArgs,const CmdList& cmds){
             {
                 //short command
                 //INTERPRET SHORT COMMAND---------------------------
-                auto tmp{parseShortCmd({cbegin(arg)+1,cend(arg)},cmds)};
+                auto tmp{parseShortCmd(std::string_view{arg}.substr(1),cmds)};
                 LOGPL("GOT KEYS -- ");
                 for(const auto& key : tmp.list)
                 {

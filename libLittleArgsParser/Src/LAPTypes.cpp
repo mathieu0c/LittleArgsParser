@@ -1,4 +1,4 @@
-#include "LAPTypes.hpp"
+#include "LittleArgsParser/LAPTypes.hpp"
 
 #include <ostream>
 #include <iostream>

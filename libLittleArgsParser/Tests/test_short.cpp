@@ -1,8 +1,7 @@
 #include <iostream>
 #include <string>
 
-#include "../Src/LittleArgsParser/Log.hpp"
-#include "../Src/LittleArgsParser/LittleArgsParser.hpp"
+#include <littleArgsParser/LittleArgsParser.hpp>
 
 namespace
 {

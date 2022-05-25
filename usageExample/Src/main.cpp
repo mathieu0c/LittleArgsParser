@@ -5,7 +5,7 @@
 
 #define ENABLE_LOG
 
-#include "Src/LittleArgsParser/LittleArgsParser.hpp"
+#include <LittleArgsParser/LittleArgsParser>
 
 namespace
 {
@@ -59,7 +59,7 @@ int main(int argc,char* argv[]){
         ex
     )};
 
-    LOGL(helpMsg);
+    std::cout << helpMsg << "\n";
 
     return 0;
 }
