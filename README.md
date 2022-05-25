@@ -33,5 +33,5 @@ cmake --build build -- test
 
 One liner
 ```bash
-cmake -Bbuild && cmake --build build -- test
+cmake -Bbuild && cmake --build build && cmake --build build -- test
 ```
