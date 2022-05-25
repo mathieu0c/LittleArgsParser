@@ -1,10 +1,10 @@
-#set (CMAKE_CXX_STANDARD 20)
+set (CMAKE_CXX_STANDARD 20)
 
-#link_libraries(LittleArgsParser::LittleArgsParser)
+link_libraries(LittleArgsParser::LittleArgsParser)
 
-#add_executable(test_short_bin test_short.cpp)
-#add_test(test_short test_short_bin)
-#set_tests_properties(test_short  PROPERTIES FIXTURES_SETUP       fix_SHORT_OK)
+add_executable(test_short_bin test_short.cpp)
+add_test(test_short test_short_bin)
+set_tests_properties(test_short  PROPERTIES FIXTURES_SETUP       fix_SHORT_OK)
 
 #pass
 # add_executable(firstTest_bin firstTest.cpp)

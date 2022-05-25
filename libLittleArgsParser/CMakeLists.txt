@@ -12,13 +12,14 @@ set(CMAKE_CXX_STANDARD 20)
 # Create target and set properties
 
 add_library(littleArgsParser
+    Src/LittleArgsParser.cpp
     Src/LAPTypes.cpp
     Src/LAPParser.hpp Src/LAPParser.cpp
     Src/LAPHelper.cpp
 )
 
 #Add an alias so that library can be used inside the build tree, e.g. when testing
-add_library(LittleArgsParser::littleArgsParser ALIAS littleArgsParser)
+add_library(LittleArgsParser::LittleArgsParser ALIAS littleArgsParser)
 
 #Set target properties
 target_include_directories(littleArgsParser

@@ -1,7 +1,9 @@
 #include <iostream>
 #include <string>
 
-#include <littleArgsParser/LittleArgsParser.hpp>
+#include "LittleArgsParser/LittleArgsParser"
+
+#define LOGEL(x) std::cerr<<x
 
 namespace
 {

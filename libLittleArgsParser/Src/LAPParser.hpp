@@ -1,6 +1,7 @@
 #pragma once
 
 #include "LittleArgsParser/LAPTypes.hpp"
+#include "Log.hpp"
 
 #include <algorithm>
 #include <unordered_set>
@@ -25,7 +26,6 @@ enum CmdType{
     TYPE_TEXT=1u<<2
 };
 
-
 //merge r in l
 //if both l and r have a pending "waiting for arg" it will throw an error as only one command at a time can be waiting for an arg
 inline
@@ -44,7 +44,6 @@ IntermediateParseResult merge(const IntermediateParseResult& l, const Intermedia
     return out;
 }
 } // namespace
-
 
 template<typename UnaryPredicate,typename T> 
 int32_t firstIndexOf(const T& cmds,UnaryPredicate p){
@@ -94,16 +93,8 @@ auto find(const decltype(Command::longCmd)& cmd,const CmdList& cmds){
 IntermediateParseResult parseShortCmd(const std::string_view input,const CmdList& cmds);
 IntermediateParseResult parseLongCmd(const std::string& input,const CmdList& cmds);
 
-std::optional<ParseResult> parseArgs(const StringVector& inArgs,const CmdList& cmds);
-inline
-auto parseArgs(int argc,char* argv[],const CmdList& cmds,bool skipFirstArg=true){
-    return parseArgs(StringVector{argv+static_cast<int>(skipFirstArg),argv+argc},cmds);
-}
-
-lap::CmdMatch matchedCmd(const ParseResult& cmds,const Command& cmd); 
-
-inline
-auto matchedCmd(const ParseResult& cmds,const SharedCmd& cmd){return matchedCmd(cmds,*cmd);}
+//intermediate parsing function -> private
+ParseResult _parseArgs(const StringVector& inArgs,const CmdList& cmds);
 
 } // namespace lap
 

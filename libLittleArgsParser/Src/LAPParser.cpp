@@ -3,9 +3,9 @@
 
 #include <unordered_map>
 
-namespace
+namespace lap
 {
-using namespace lap;
+
 ParseResult _parseArgs(const StringVector& inArgs,const CmdList& cmds){
 
     std::unordered_map<SharedCmd,StringVector> cmdArgs{};
@@ -127,12 +127,6 @@ ParseResult _parseArgs(const StringVector& inArgs,const CmdList& cmds){
     return {.cmdList=std::move(outList),.freeArgs=std::move(freeArgs)};
 }
 
-} // namespace
-
-
-namespace lap
-{
-
 IntermediateParseResult parseShortCmd(const std::string_view input,const CmdList& cmds)
 {
     LOGPL("\tFound a short command : <"<<input<<">\n");
@@ -188,34 +182,6 @@ IntermediateParseResult parseLongCmd(const std::string& input,const CmdList& cmd
     out.list.insert(targetCmd);
 
     return out;
-}
-
-std::optional<ParseResult> parseArgs(const StringVector& inArgs,const CmdList& cmds){
-    ParseResult out{};
-
-    try
-    {
-        out = _parseArgs(inArgs,cmds);
-    }
-    catch(const std::exception& e)
-    {
-        LOGPL(e.what());
-        RAWEL("Command line parsing error : "<<e.what()<<"\n");
-        return {};
-    }
-    return out;
-}
-
-lap::CmdMatch matchedCmd(const ParseResult& cmds,const Command& cmd)
-{
-    for(const auto& e : cmds.cmdList)
-    {
-        if(*e.cmd == cmd)
-        {
-            return {true,e.args};
-        }
-    }
-    return {.matched=false};
 }
 
 } // namespace lap
