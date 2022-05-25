@@ -4,7 +4,8 @@ This is an awful implementation of a small parser for command line arguments. I 
 
 It is not really efficient and I am not even sure how this gets to work but it does.
 
-<!--MARKDOWN_INDEX_BEGIN--># Table of content
+<!--MARKDOWN_INDEX_BEGIN-->
+# Table of content
 
 **[LittleArgsParser](#littleargsparser)**<br/>
 &emsp;*[Quick install](#quick-install)*<br/>
@@ -17,7 +18,7 @@ It is not really efficient and I am not even sure how this gets to work but it d
 
 ```bash
 cd libLittleArgsParser
-cmake -Bbuild && cmake --build build && sudo cmake --build build -- install
+cmake -Bbuild -DCMAKE_BUILD_TYPE:STRING=Release && cmake --build build && sudo cmake --build build -- install
 ```
 
 ### Uninstall 
